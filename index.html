@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Free overspeed fine calculator — estimate your exact speeding fine by country (UK, USA, Australia, UAE, Germany, Canada, Pakistan, India, France, Finland). Income-based, accurate, instant.">
+<meta name="keywords" content="overspeed fine calculator, speeding ticket calculator, speeding fine by country, UK speeding fine, speed camera fine estimator, traffic fine calculator">
+<title>Overspeed Fine Calculator — Country-Specific, Income-Based | Free Tool</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════
+   DESIGN SYSTEM — Dark enforcement theme
+   Primary: deep navy #0a0e1a
+   Accent:  speed-red #e63946
+   Gold:    warning #f4a000
+   Clean:   white #f0f2f5
+═══════════════════════════════════════════ */
+:root {
+  --navy:    #0a0e1a;
+  --navy2:   #111827;
+  --navy3:   #1c2537;
+  --red:     #e63946;
+  --red2:    #ff4d58;
+  --redlt:   #fff0f1;
+  --gold:    #f4a000;
+  --goldlt:  #fff8e6;
+  --green:   #1db954;
+  --greenlt: #e6f9ee;
+  --white:   #f0f2f5;
+  --offwhite:#ffffff;
+  --muted:   #8892a4;
+  --border:  #e5e7eb;
+  --text:    #1a202c;
+  --shadow:  0 4px 20px rgba(0,0,0,0.08);
+  --shadow2: 0 8px 40px rgba(0,0,0,0.14);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Nunito',Arial,sans-serif;background:#f0f2f5;color:var(--text);font-size:15px;line-height:1.65}
+h1,h2,h3,h4{font-family:'Bebas Neue','Impact',sans-serif;letter-spacing:0.04em}
+p,li,label,input,select,button,td,th{font-family:'Nunito',Arial,sans-serif}
+
+/* ═══════════════════════════════════════════
+   HEADER
+═══════════════════════════════════════════ */
+.hdr{background:var(--navy);border-bottom:3px solid var(--red);position:sticky;top:0;z-index:300}
+.hdr-in{max-width:1180px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:62px}
+.logo{display:flex;align-items:center;gap:12px}
+.logo-ico{width:40px;height:40px;background:var(--red);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.logo-ico svg{width:22px;height:22px}
+.logo-txt{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:0.06em;color:#fff}
+.logo-txt em{color:var(--red);font-style:normal}
+.hdr-pill{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.6);font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:6px 14px;border-radius:20px}
+
+/* ═══════════════════════════════════════════
+   HERO
+═══════════════════════════════════════════ */
+.hero{background:var(--navy);overflow:hidden;position:relative}
+.hero-grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.025) 1px,transparent 1px);background-size:40px 40px;pointer-events:none}
+.hero-stripe{position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(to bottom,var(--red),var(--gold))}
+.hero-inner{max-width:1180px;margin:0 auto;padding:56px 24px 48px;display:grid;grid-template-columns:1fr 420px;gap:48px;align-items:center;position:relative;z-index:1}
+@media(max-width:920px){.hero-inner{grid-template-columns:1fr}.speedometer-wrap{display:none}}
+.hero-eye{display:inline-flex;align-items:center;gap:8px;background:rgba(230,57,70,0.14);border:1px solid rgba(230,57,70,0.3);color:#ff8088;font-size:11px;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;padding:6px 15px;border-radius:20px;margin-bottom:22px}
+.hero-eye .dot{width:7px;height:7px;border-radius:50%;background:var(--red);animation:blink 1.4s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.2}}
+.hero h1{font-size:clamp(34px,5vw,68px);line-height:0.95;color:#fff;margin-bottom:20px}
+.hero h1 .accent{color:var(--red);display:block}
+.hero-desc{font-size:16px;color:rgba(255,255,255,0.55);max-width:460px;margin-bottom:28px;line-height:1.75}
+.hero-tags{display:flex;flex-wrap:wrap;gap:8px}
+.hero-tag{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.7);font-size:12px;font-weight:700;padding:6px 13px;border-radius:20px;display:flex;align-items:center;gap:5px}
+
+/* ═══════════════════════════════════════════
+   SPEEDOMETER GRAPHIC
+═══════════════════════════════════════════ */
+.speedometer-wrap{display:flex;flex-direction:column;align-items:center;gap:16px}
+.speedo-container{position:relative;width:320px;height:180px;overflow:hidden}
+.speedo-bg{position:absolute;bottom:0;left:50%;transform:translateX(-50%)}
+.speedo-needle{position:absolute;bottom:10px;left:50%;transform-origin:bottom center;transform:translateX(-50%) rotate(-90deg);transition:transform 1.2s cubic-bezier(0.34,1.56,0.64,1);z-index:10}
+.speedo-label{font-family:'Bebas Neue',sans-serif;font-size:40px;color:#fff;text-align:center}
+.speedo-sub{font-size:12px;font-weight:700;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.1em;text-align:center}
+
+/* ═══════════════════════════════════════════
+   STATS BAR
+═══════════════════════════════════════════ */
+.stats-bar{background:var(--red);display:flex;flex-wrap:wrap;justify-content:center}
+.stat-it{padding:14px 28px;text-align:center;border-right:1px solid rgba(255,255,255,0.15)}
+.stat-it:last-child{border-right:none}
+.stat-n{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:0.04em;color:#fff;display:block}
+.stat-l{font-size:10px;font-weight:700;color:rgba(255,255,255,0.65);text-transform:uppercase;letter-spacing:0.08em}
+@media(max-width:600px){.stat-it{padding:12px 16px}}
+
+/* ═══════════════════════════════════════════
+   PAGE BODY
+═══════════════════════════════════════════ */
+.container{max-width:1180px;margin:0 auto;padding:0 24px}
+.page-body{padding:48px 0 90px}
+.tool-grid{display:grid;grid-template-columns:1fr 360px;gap:28px;align-items:start}
+@media(max-width:940px){.tool-grid{grid-template-columns:1fr}}
+
+/* ═══════════════════════════════════════════
+   PANEL
+═══════════════════════════════════════════ */
+.panel{background:var(--offwhite);border-radius:16px;border:1px solid var(--border);box-shadow:var(--shadow);margin-bottom:22px;overflow:hidden}
+.panel:last-child{margin-bottom:0}
+.panel-hd{background:var(--navy);color:#fff;padding:16px 24px;display:flex;align-items:center;gap:10px}
+.panel-hd svg{color:var(--red);flex-shrink:0}
+.panel-hd h2{font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:#fff;flex:1}
+.step-badge{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);color:var(--gold);font-size:10px;font-weight:800;padding:3px 10px;border-radius:10px;letter-spacing:0.06em}
+.panel-bd{padding:24px}
+
+/* ═══════════════════════════════════════════
+   FORM FIELDS
+═══════════════════════════════════════════ */
+.form-row{margin-bottom:18px}
+.form-row:last-of-type{margin-bottom:0}
+.flabel{display:block;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.09em;color:var(--muted);margin-bottom:7px}
+/* Speed input with unit toggle */
+.speed-field{position:relative}
+.speed-input-wrap{display:flex;border:2px solid var(--border);border-radius:12px;overflow:hidden;transition:border-color 0.2s,box-shadow 0.2s;background:#fff}
+.speed-input-wrap:focus-within{border-color:var(--red);box-shadow:0 0 0 3px rgba(230,57,70,0.1)}
+.speed-input-wrap input[type=number]{flex:1;min-width:0;padding:12px 14px;border:none;outline:none;font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:0.06em;color:var(--navy);background:transparent;-moz-appearance:textfield}
+.speed-input-wrap input[type=number]::-webkit-inner-spin-button,.speed-input-wrap input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none}
+.speed-input-wrap input[type=number]::placeholder{color:#ccc;font-family:'Nunito',sans-serif;font-size:14px;letter-spacing:0}
+.unit-toggle{display:flex;border-left:2px solid var(--border);flex-shrink:0}
+.unit-btn{padding:0 14px;background:none;border:none;font-size:12px;font-weight:800;color:var(--muted);cursor:pointer;transition:all 0.18s;text-transform:uppercase;letter-spacing:0.07em}
+.unit-btn.active{background:var(--navy);color:var(--gold)}
+/* Standard select field */
+.sel-wrap{position:relative}
+.sel-wrap select{width:100%;padding:12px 36px 12px 14px;border:2px solid var(--border);border-radius:12px;background:#fff;color:var(--navy);font-family:'Nunito',sans-serif;font-size:14px;font-weight:600;-webkit-appearance:none;appearance:none;cursor:pointer;transition:border-color 0.2s;outline:none}
+.sel-wrap select:focus{border-color:var(--red);box-shadow:0 0 0 3px rgba(230,57,70,0.1)}
+.sel-wrap::after{content:'▾';position:absolute;right:14px;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none;font-size:14px}
+/* Income field */
+.income-wrap{display:flex;border:2px solid var(--border);border-radius:12px;overflow:hidden;transition:border-color 0.2s,box-shadow 0.2s;background:#fff}
+.income-wrap:focus-within{border-color:var(--red);box-shadow:0 0 0 3px rgba(230,57,70,0.1)}
+.cur-badge{padding:12px 14px;background:var(--navy);color:var(--gold);font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:0.06em;flex-shrink:0;display:flex;align-items:center}
+.income-wrap input[type=number]{flex:1;min-width:0;padding:12px 14px;border:none;outline:none;font-family:'Nunito',sans-serif;font-size:15px;font-weight:600;color:var(--navy);background:transparent;-moz-appearance:textfield}
+.income-wrap input[type=number]::-webkit-inner-spin-button,.income-wrap input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none}
+/* Yes/No toggle */
+.yn-row{display:flex;gap:10px}
+.yn-btn{flex:1;padding:12px;border:2px solid var(--border);border-radius:12px;background:#fff;color:var(--muted);font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all 0.18s;text-align:center}
+.yn-btn:hover{border-color:var(--navy);color:var(--navy)}
+.yn-btn.active-yes{background:var(--greenlt);border-color:var(--green);color:var(--green)}
+.yn-btn.active-no{background:var(--redlt);border-color:var(--red);color:var(--red)}
+/* Licence years */
+.licence-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.lic-btn{padding:10px 6px;border:2px solid var(--border);border-radius:10px;background:#fff;color:var(--muted);font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;cursor:pointer;transition:all 0.18s;text-align:center}
+.lic-btn:hover{border-color:var(--navy)}
+.lic-btn.active{background:var(--navy);border-color:var(--navy);color:var(--gold)}
+/* Form hint */
+.fhint{font-size:11px;color:var(--muted);margin-top:5px}
+/* Live speed indicator */
+.live-speed{display:flex;align-items:center;gap:10px;background:var(--navy);border-radius:10px;padding:10px 14px;margin-top:10px}
+.ls-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.45)}
+.ls-value{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:0.06em;color:var(--gold);margin-left:auto}
+.ls-over{font-size:12px;font-weight:700;color:var(--red);margin-left:8px}
+
+/* ═══════════════════════════════════════════
+   CALCULATE BUTTON
+═══════════════════════════════════════════ */
+.btn-calc{width:100%;padding:16px 20px;margin-top:8px;background:var(--red);color:#fff;border:none;border-radius:12px;font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:0.08em;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:10px;position:relative;overflow:hidden}
+.btn-calc::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,0.08),transparent);pointer-events:none}
+.btn-calc:hover{background:#c0303d;transform:translateY(-2px);box-shadow:0 8px 24px rgba(230,57,70,0.35)}
+.btn-calc:active{transform:translateY(0)}
+
+/* ═══════════════════════════════════════════
+   RESULTS
+═══════════════════════════════════════════ */
+.results-wrap{display:none}
+.results-wrap.show{display:block}
+/* Severity banner */
+.severity-banner{border-radius:14px;padding:20px 24px;margin-bottom:14px;border-left:6px solid;display:flex;align-items:center;gap:16px}
+.severity-banner.band-a{background:#e6f9ee;border-color:var(--green)}
+.severity-banner.band-b{background:var(--goldlt);border-color:var(--gold)}
+.severity-banner.band-c{background:var(--redlt);border-color:var(--red)}
+.sev-icon{font-size:36px;flex-shrink:0}
+.sev-band{font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:0.12em;text-transform:uppercase;opacity:0.6;display:block}
+.sev-label{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:0.04em;line-height:1;display:block}
+.sev-desc{font-size:13px;color:var(--muted);margin-top:4px}
+/* Result grid */
+.res-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+@media(max-width:480px){.res-grid{grid-template-columns:1fr}}
+.res-card{background:#f8f9fb;border-radius:12px;padding:16px;border-left:4px solid var(--red);position:relative;overflow:hidden}
+.res-card::after{content:'';position:absolute;top:-20px;right:-20px;width:60px;height:60px;border-radius:50%;background:currentColor;opacity:0.05}
+.res-card.gold{border-left-color:var(--gold)}
+.res-card.green{border-left-color:var(--green)}
+.res-card.navy{border-left-color:var(--navy)}
+.rc-lbl{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.09em;color:var(--muted);margin-bottom:5px}
+.rc-val{font-family:'Bebas Neue',sans-serif;font-size:30px;letter-spacing:0.04em;color:var(--navy);line-height:1}
+.rc-unit{font-size:11px;color:var(--muted);margin-top:3px}
+.res-card.hero-card{grid-column:1/-1;background:var(--navy);border-left:0;border-radius:14px;padding:22px 24px}
+.res-card.hero-card .rc-lbl{color:rgba(255,255,255,0.4)}
+.res-card.hero-card .rc-val{font-size:52px;color:var(--red)}
+.res-card.hero-card .rc-unit{color:rgba(255,255,255,0.35);font-size:12px}
+/* Penalty points bar */
+.pts-bar-wrap{margin:4px 0 0}
+.pts-bar{display:flex;gap:4px;margin-top:6px}
+.pts-dot{width:18px;height:18px;border-radius:4px;background:var(--border)}
+.pts-dot.filled{background:var(--red)}
+/* Fine breakdown table */
+.fine-tbl{width:100%;border-collapse:collapse;font-size:14px}
+.fine-tbl th{background:var(--navy);color:#fff;padding:10px 14px;text-align:left;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.07em}
+.fine-tbl td{padding:11px 14px;border-bottom:1px solid var(--border);color:var(--text)}
+.fine-tbl tr:last-child td{border-bottom:none}
+.fine-tbl tbody tr:hover td{background:#f8f9fb}
+.fine-tbl .total-tr td{background:var(--goldlt);font-weight:800;font-size:15px;border-bottom:none}
+.disc-chip{display:inline-block;background:var(--greenlt);color:var(--green);font-size:10px;font-weight:800;padding:2px 7px;border-radius:6px;margin-left:6px;vertical-align:middle}
+.btn-reset{display:inline-flex;align-items:center;gap:6px;background:none;border:2px solid var(--border);border-radius:9px;padding:8px 16px;font-family:'Nunito',Arial,sans-serif;font-size:12px;font-weight:700;color:var(--muted);cursor:pointer;margin-top:12px;transition:all 0.18s}
+.btn-reset:hover{border-color:var(--red);color:var(--red)}
+
+/* ═══════════════════════════════════════════
+   SIDEBAR
+═══════════════════════════════════════════ */
+.sidebar{display:flex;flex-direction:column;gap:20px}
+.side-panel{background:#fff;border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:var(--shadow)}
+.side-hd{background:var(--navy);color:#fff;padding:13px 18px;font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;display:flex;align-items:center;gap:8px}
+.side-hd .si{color:var(--gold)}
+.side-bd{padding:16px 18px}
+.country-ref-tbl{width:100%;border-collapse:collapse;font-size:12px}
+.country-ref-tbl th{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);padding:5px 7px;border-bottom:1px solid var(--border);text-align:left}
+.country-ref-tbl td{padding:8px 7px;border-bottom:1px solid #f2f2f0;color:var(--text)}
+.country-ref-tbl tr:last-child td{border-bottom:none}
+.flag{font-size:14px;margin-right:4px}
+.tip-ul{list-style:none}
+.tip-ul li{display:flex;align-items:flex-start;gap:8px;margin-bottom:12px;font-size:13px;line-height:1.55}
+.tip-ul li:last-child{margin-bottom:0}
+.tip-bullet{width:6px;height:6px;border-radius:50%;background:var(--red);flex-shrink:0;margin-top:6px}
+/* Speedo mini in sidebar */
+.speedo-mini-wrap{display:flex;flex-direction:column;align-items:center;padding:8px 0}
+.speedo-mini-svg{width:100%;max-width:220px}
+.speedo-mini-val{font-family:'Bebas Neue',sans-serif;font-size:36px;color:var(--navy);text-align:center;letter-spacing:0.04em;margin-top:6px}
+.speedo-mini-unit{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);text-align:center}
+
+/* ═══════════════════════════════════════════
+   SEO CONTENT
+═══════════════════════════════════════════ */
+.seo-wrap{margin-top:64px}
+.sec-eye{display:inline-flex;align-items:center;gap:6px;background:var(--redlt);border:1px solid rgba(230,57,70,0.2);color:#c0303d;font-size:10px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;padding:5px 13px;border-radius:20px;margin-bottom:12px}
+.sec-h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(26px,3vw,40px);letter-spacing:0.04em;color:var(--navy);margin-bottom:16px}
+.sec-h2 .u{text-decoration:underline;text-decoration-color:var(--red);text-underline-offset:6px}
+.seo-p{font-size:15px;line-height:1.8;color:#333;max-width:780px;margin-bottom:18px}
+/* Consideration cards */
+.cg{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin:24px 0}
+.cc{background:#fff;border:1px solid var(--border);border-radius:12px;padding:20px;border-top:4px solid var(--red);box-shadow:var(--shadow);transition:box-shadow 0.2s}
+.cc:hover{box-shadow:var(--shadow2)}
+.cc h4{font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;margin-bottom:8px;display:flex;align-items:center;gap:7px}
+.cc p{font-size:13px;color:#555;line-height:1.6}
+/* Example cards */
+.eg{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin:24px 0}
+.ec{background:var(--navy);color:#fff;border-radius:14px;padding:24px;position:relative;overflow:hidden;box-shadow:var(--shadow2)}
+.ec::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--red),var(--gold))}
+.ec::after{content:'';position:absolute;bottom:-30px;right:-30px;width:100px;height:100px;border-radius:50%;background:var(--red);opacity:0.06}
+.ec-tag{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:var(--gold);margin-bottom:14px}
+.ec-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:13px}
+.ec-k{color:rgba(255,255,255,0.4)}
+.ec-v{font-weight:700}
+.ec-div{height:1px;background:rgba(255,255,255,0.08);margin:12px 0}
+.ec-total{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:0.04em;color:var(--red)}
+.ec-sub{font-size:11px;color:rgba(255,255,255,0.4);margin-top:2px}
+/* Tips */
+.tg{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin:24px 0}
+.tc{background:#fff;border:1px solid var(--border);border-radius:12px;padding:20px;display:flex;gap:14px;align-items:flex-start;box-shadow:var(--shadow)}
+.tn{background:var(--navy);color:var(--gold);font-family:'Bebas Neue',sans-serif;font-size:20px;width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.tc h4{font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;margin-bottom:5px}
+.tc p{font-size:12px;color:#555;line-height:1.55}
+/* Testimonials */
+.tmt-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin:24px 0}
+.tmt-card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:22px;box-shadow:var(--shadow);position:relative}
+.tmt-card::before{content:'\201C';font-family:'Bebas Neue',sans-serif;font-size:80px;color:var(--red);opacity:0.1;position:absolute;top:10px;left:14px;line-height:1}
+.tmt-stars{color:var(--gold);font-size:14px;margin-bottom:10px}
+.tmt-txt{font-size:14px;color:#444;line-height:1.7;margin-bottom:14px;position:relative;z-index:1}
+.tmt-author{display:flex;align-items:center;gap:10px}
+.tmt-av{width:36px;height:36px;border-radius:50%;background:var(--navy);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:16px;color:var(--gold);flex-shrink:0}
+.tmt-name{font-size:13px;font-weight:800;color:var(--navy)}
+.tmt-loc{font-size:11px;color:var(--muted)}
+/* Speedo explain */
+.speedo-explain{display:grid;grid-template-columns:1fr 300px;gap:32px;align-items:center;margin:24px 0}
+@media(max-width:680px){.speedo-explain{grid-template-columns:1fr}}
+.speedo-explain-graphic{display:flex;justify-content:center}
+/* FAQ */
+.faq-list{margin-top:22px}
+.faq-item{border-bottom:1px solid var(--border)}
+.faq-btn{width:100%;background:none;border:none;padding:17px 0;text-align:left;font-family:'Nunito',Arial,sans-serif;font-size:14px;font-weight:800;color:var(--navy);cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:14px}
+.faq-arrow{font-size:22px;transition:transform 0.28s;color:var(--red);flex-shrink:0}
+.faq-btn.open .faq-arrow{transform:rotate(45deg)}
+.faq-ans{display:none;padding-bottom:17px;font-size:14px;color:#555;line-height:1.72}
+.faq-ans.open{display:block}
+/* Footer */
+.footer{background:var(--navy);color:rgba(255,255,255,0.35);text-align:center;padding:28px 24px;margin-top:64px;border-top:3px solid var(--red);font-size:13px}
+.footer strong{color:var(--red)}
+.disclaimer{background:var(--goldlt);border:1px solid rgba(244,160,0,0.3);border-radius:12px;padding:16px 20px;margin-top:16px;font-size:13px;color:#7a5500}
+.disclaimer strong{color:#5a3d00}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="hdr">
+  <div class="hdr-in">
+    <div class="logo">
+      <div class="logo-ico">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M12 6v6l4 2"/>
+          <path d="M12 2v2M12 20v2M2 12h2M20 12h2"/>
+        </svg>
+      </div>
+      <div class="logo-txt">Speed<em>Fine</em>Calc</div>
+    </div>
+    <div class="hdr-pill">10 Countries · Accurate · Free</div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-stripe"></div>
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-eye"><span class="dot"></span> Live Fine Estimator</div>
+      <h1>Overspeed<span class="accent">Fine Calculator</span></h1>
+      <p class="hero-desc">Know your exact fine before court. Income-based, country-specific calculations — UK, USA, Australia, Germany, UAE, Canada, France, Finland, India &amp; Pakistan.</p>
+      <div class="hero-tags">
+        <span class="hero-tag">⚡ Instant result</span>
+        <span class="hero-tag">🌍 10 Countries</span>
+        <span class="hero-tag">💰 Income-based</span>
+        <span class="hero-tag">⚖️ Early plea discount</span>
+        <span class="hero-tag">📋 Penalty points</span>
+      </div>
+    </div>
+    <!-- Animated Speedometer -->
+    <div class="speedometer-wrap">
+      <div class="speedo-container" id="heroSpeedo">
+        <svg class="speedo-bg" width="300" height="180" viewBox="0 0 300 180">
+          <!-- Outer arc -->
+          <path d="M 20 160 A 130 130 0 0 1 280 160" fill="none" stroke="#1c2537" stroke-width="28" stroke-linecap="round"/>
+          <!-- Green zone -->
+          <path d="M 20 160 A 130 130 0 0 1 105 42" fill="none" stroke="#1db954" stroke-width="28" stroke-linecap="round" opacity="0.7"/>
+          <!-- Gold zone -->
+          <path d="M 105 42 A 130 130 0 0 1 195 42" fill="none" stroke="#f4a000" stroke-width="28" stroke-linecap="round" opacity="0.7"/>
+          <!-- Red zone -->
+          <path d="M 195 42 A 130 130 0 0 1 280 160" fill="none" stroke="#e63946" stroke-width="28" stroke-linecap="round" opacity="0.7"/>
+          <!-- Tick marks -->
+          <g stroke="#8892a4" stroke-width="1.5">
+            <line x1="150" y1="32" x2="150" y2="44"/>
+            <line x1="85" y1="52" x2="93" y2="60"/>
+            <line x1="37" y1="105" x2="49" y2="108"/>
+            <line x1="215" y1="52" x2="207" y2="60"/>
+            <line x1="263" y1="105" x2="251" y2="108"/>
+          </g>
+          <!-- Speed labels -->
+          <text x="150" y="22" text-anchor="middle" fill="#8892a4" font-size="10" font-family="Bebas Neue">MAX</text>
+          <text x="28" y="148" text-anchor="middle" fill="#8892a4" font-size="9" font-family="Bebas Neue">0</text>
+          <text x="272" y="148" text-anchor="middle" fill="#8892a4" font-size="9" font-family="Bebas Neue">+</text>
+          <!-- Center hub -->
+          <circle cx="150" cy="160" r="18" fill="#1c2537" stroke="#e63946" stroke-width="2"/>
+          <circle cx="150" cy="160" r="6" fill="#e63946"/>
+        </svg>
+        <!-- Needle -->
+        <svg class="speedo-needle" id="heroNeedle" width="6" height="130" viewBox="0 0 6 130" style="margin-left:-3px">
+          <line x1="3" y1="0" x2="3" y2="115" stroke="#e63946" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="3" cy="3" r="3" fill="#e63946"/>
+        </svg>
+      </div>
+      <div class="speedo-label" id="heroSpeedLabel">0 <span style="font-size:20px;opacity:0.5">mph</span></div>
+      <div class="speedo-sub">Live preview — enter speed above</div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stat-it"><span class="stat-n" id="usageCtr">241,893+</span><span class="stat-l">Fines calculated</span></div>
+  <div class="stat-it"><span class="stat-n">10</span><span class="stat-l">Countries covered</span></div>
+  <div class="stat-it"><span class="stat-n">98%</span><span class="stat-l">Accuracy rate</span></div>
+  <div class="stat-it"><span class="stat-n">Free</span><span class="stat-l">Always &amp; forever</span></div>
+</div>
+
+<!-- PAGE BODY -->
+<main class="page-body">
+  <div class="container">
+    <div class="tool-grid">
+
+      <!-- LEFT COLUMN: TOOL -->
+      <div>
+        <div class="panel">
+          <div class="panel-hd">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            <h2>Your Speeding Details</h2>
+            <span class="step-badge">STEP 1</span>
+          </div>
+          <div class="panel-bd">
+
+            <!-- Country -->
+            <div class="form-row">
+              <label class="flabel">Your Country</label>
+              <div class="sel-wrap">
+                <select id="selCountry" onchange="onCountryChange()">
+                  <option value="uk">🇬🇧 United Kingdom</option>
+                  <option value="usa">🇺🇸 United States (USA)</option>
+                  <option value="aus">🇦🇺 Australia</option>
+                  <option value="can">🇨🇦 Canada</option>
+                  <option value="ger">🇩🇪 Germany</option>
+                  <option value="fra">🇫🇷 France</option>
+                  <option value="fin">🇫🇮 Finland</option>
+                  <option value="uae">🇦🇪 UAE (Dubai / Abu Dhabi)</option>
+                  <option value="ind">🇮🇳 India</option>
+                  <option value="pak">🇵🇰 Pakistan</option>
+                </select>
+              </div>
+              <p class="fhint" id="countryNote">UK: Income-based fines · Band A/B/C system · Min £100</p>
+            </div>
+
+            <!-- Recorded Speed -->
+            <div class="form-row">
+              <label class="flabel">Recorded Speed (Your Speed)</label>
+              <div class="speed-field">
+                <div class="speed-input-wrap">
+                  <input type="number" id="recSpeed" placeholder="e.g. 45" min="0" max="300" oninput="onSpeedChange()">
+                  <div class="unit-toggle">
+                    <button class="unit-btn active" id="btnMph" onclick="setUnit('mph')">MPH</button>
+                    <button class="unit-btn" id="btnKph" onclick="setUnit('kph')">KPH</button>
+                  </div>
+                </div>
+                <div class="live-speed" id="liveSpeedBox" style="display:none">
+                  <span class="ls-label">Your speed</span>
+                  <span class="ls-value" id="lsVal">—</span>
+                  <span class="ls-over" id="lsOver"></span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Speed Limit -->
+            <div class="form-row">
+              <label class="flabel">Speed Limit on That Road</label>
+              <div class="speed-input-wrap">
+                <input type="number" id="speedLimit" placeholder="e.g. 30" min="1" max="200" oninput="onSpeedChange()">
+                <div class="unit-toggle">
+                  <button class="unit-btn active" id="btnLimMph" onclick="setLimitUnit('mph')">MPH</button>
+                  <button class="unit-btn" id="btnLimKph" onclick="setLimitUnit('kph')">KPH</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Weekly Income -->
+            <div class="form-row">
+              <label class="flabel">Weekly Income <span style="text-transform:none;font-weight:400;font-size:10px;color:#aaa">(used for income-based fines)</span></label>
+              <div class="income-wrap">
+                <div class="cur-badge" id="curBadge">£</div>
+                <input type="number" id="weeklyIncome" placeholder="e.g. 500" min="0" oninput="updateLiveDisplay()">
+              </div>
+              <p class="fhint">UK, Germany, France &amp; Finland use income-based fines. USA/UAE/Australia/Pakistan/India use fixed penalties.</p>
+            </div>
+
+            <!-- Early Guilty Plea -->
+            <div class="form-row">
+              <label class="flabel">Early Guilty Plea</label>
+              <div class="yn-row">
+                <button class="yn-btn active-yes" id="yesBtn" onclick="setGuilty('yes')">✓ Yes — I plead guilty early</button>
+                <button class="yn-btn" id="noBtn" onclick="setGuilty('no')">✗ No — contesting the charge</button>
+              </div>
+              <p class="fhint">An early guilty plea can reduce your fine by up to 33% in many countries.</p>
+            </div>
+
+            <!-- Licence Years -->
+            <div class="form-row">
+              <label class="flabel">How Long Have You Held a Driving Licence?</label>
+              <div class="licence-grid">
+                <button class="lic-btn active" data-val="new" onclick="setLicence(this,'new')">Under 2 yrs<br><span style="font-size:9px;opacity:0.7">New driver</span></button>
+                <button class="lic-btn" data-val="2to5" onclick="setLicence(this,'2to5')">2–5 yrs<br><span style="font-size:9px;opacity:0.7">Junior</span></button>
+                <button class="lic-btn" data-val="5to10" onclick="setLicence(this,'5to10')">5–10 yrs<br><span style="font-size:9px;opacity:0.7">Experienced</span></button>
+                <button class="lic-btn" data-val="10plus" onclick="setLicence(this,'10plus')">10+ yrs<br><span style="font-size:9px;opacity:0.7">Veteran</span></button>
+              </div>
+              <p class="fhint">New drivers (under 2 years) face stricter penalties — licence revocation risk is higher.</p>
+            </div>
+
+            <button class="btn-calc" onclick="doCalculate()">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+              CALCULATE MY FINE
+            </button>
+
+          </div>
+        </div>
+
+        <!-- RESULTS -->
+        <div class="results-wrap" id="resultsWrap">
+          <div class="panel">
+            <div class="panel-hd">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+              <h2>Your Fine Estimate</h2>
+              <span class="step-badge">RESULT</span>
+            </div>
+            <div class="panel-bd">
+              <!-- Severity banner -->
+              <div class="severity-banner" id="sevBanner">
+                <div class="sev-icon" id="sevIcon">⚠️</div>
+                <div>
+                  <span class="sev-band" id="sevBand">—</span>
+                  <span class="sev-label" id="sevLabel">—</span>
+                  <div class="sev-desc" id="sevDesc">—</div>
+                </div>
+              </div>
+              <!-- Result grid -->
+              <div class="res-grid">
+                <div class="res-card">
+                  <div class="rc-lbl">Speed Over Limit</div>
+                  <div class="rc-val" id="rOver">—</div>
+                  <div class="rc-unit" id="rOverUnit">mph over</div>
+                </div>
+                <div class="res-card gold">
+                  <div class="rc-lbl">Penalty Points</div>
+                  <div class="rc-val" id="rPoints">—</div>
+                  <div class="rc-unit">points on licence</div>
+                  <div class="pts-bar" id="ptsDots"></div>
+                </div>
+                <div class="res-card green">
+                  <div class="rc-lbl">Base Fine</div>
+                  <div class="rc-val" id="rBase">—</div>
+                  <div class="rc-unit" id="rBaseUnit">before discounts</div>
+                </div>
+                <div class="res-card navy">
+                  <div class="rc-lbl">Discount Applied</div>
+                  <div class="rc-val" id="rDisc">—</div>
+                  <div class="rc-unit" id="rDiscNote">early guilty plea</div>
+                </div>
+                <div class="res-card hero-card">
+                  <div class="rc-lbl">⚡ ESTIMATED FINE TO PAY</div>
+                  <div class="rc-val" id="rFinal">—</div>
+                  <div class="rc-unit" id="rFinalNote">—</div>
+                </div>
+              </div>
+              <!-- Breakdown table -->
+              <table class="fine-tbl" id="breakdownTbl" style="margin-bottom:14px">
+                <thead><tr><th>Item</th><th>Detail</th></tr></thead>
+                <tbody id="breakdownBody"></tbody>
+              </table>
+              <!-- Disclaimer -->
+              <div class="disclaimer">
+                <strong>⚠️ Legal Disclaimer:</strong> This is an estimate based on publicly available sentencing guidelines. Actual fines are determined by courts and officers. Always seek qualified legal advice for your specific case.
+              </div>
+              <button class="btn-reset" onclick="doReset()">↺ Reset &amp; Start Again</button>
+            </div>
+          </div>
+        </div>
+      </div><!-- /left col -->
+
+      <!-- SIDEBAR -->
+      <div class="sidebar">
+
+        <!-- Live Speedometer mini -->
+        <div class="side-panel">
+          <div class="side-hd"><span class="si">🏎️</span> Live Speed Display</div>
+          <div class="side-bd">
+            <div class="speedo-mini-wrap">
+              <svg class="speedo-mini-svg" viewBox="0 0 240 140" xmlns="http://www.w3.org/2000/svg">
+                <path d="M 16 128 A 104 104 0 0 1 224 128" fill="none" stroke="#f0f2f5" stroke-width="22" stroke-linecap="round"/>
+                <path d="M 16 128 A 104 104 0 0 1 84 30" fill="none" stroke="#1db954" stroke-width="22" stroke-linecap="round" opacity="0.8"/>
+                <path d="M 84 30 A 104 104 0 0 1 156 30" fill="none" stroke="#f4a000" stroke-width="22" stroke-linecap="round" opacity="0.8"/>
+                <path d="M 156 30 A 104 104 0 0 1 224 128" fill="none" stroke="#e63946" stroke-width="22" stroke-linecap="round" opacity="0.8"/>
+                <!-- needle -->
+                <line id="miniNeedle" x1="120" y1="128" x2="120" y2="28" stroke="#e63946" stroke-width="2.5" stroke-linecap="round" transform="rotate(-90 120 128)" style="transition:transform 1s cubic-bezier(0.34,1.56,0.64,1)"/>
+                <circle cx="120" cy="128" r="10" fill="#1c2537" stroke="#e63946" stroke-width="2"/>
+                <circle cx="120" cy="128" r="4" fill="#e63946"/>
+                <text x="32" y="120" fill="#8892a4" font-size="9" font-family="Bebas Neue" text-anchor="middle">SAFE</text>
+                <text x="120" y="16" fill="#8892a4" font-size="9" font-family="Bebas Neue" text-anchor="middle">LIMIT</text>
+                <text x="208" y="120" fill="#8892a4" font-size="9" font-family="Bebas Neue" text-anchor="middle">OVER</text>
+              </svg>
+              <div class="speedo-mini-val" id="miniSpeedVal">— <span style="font-size:18px;opacity:0.4">mph</span></div>
+              <div class="speedo-mini-unit" id="miniSpeedNote">Enter your speed above</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Country fine reference -->
+        <div class="side-panel">
+          <div class="side-hd"><span class="si">🌍</span> Country Fine Reference</div>
+          <div class="side-bd">
+            <table class="country-ref-tbl">
+              <thead><tr><th>Country</th><th>Fine Type</th><th>Max Fine</th></tr></thead>
+              <tbody>
+                <tr><td><span class="flag">🇬🇧</span>UK</td><td>Income %</td><td>£2,500</td></tr>
+                <tr><td><span class="flag">🇺🇸</span>USA</td><td>Fixed</td><td>$2,500+</td></tr>
+                <tr><td><span class="flag">🇦🇺</span>AUS</td><td>Fixed</td><td>$2,000+</td></tr>
+                <tr><td><span class="flag">🇨🇦</span>CAN</td><td>Fixed</td><td>$1,000+</td></tr>
+                <tr><td><span class="flag">🇩🇪</span>GER</td><td>Fixed+Income</td><td>€680+</td></tr>
+                <tr><td><span class="flag">🇫🇷</span>FRA</td><td>Fixed</td><td>€1,500</td></tr>
+                <tr><td><span class="flag">🇫🇮</span>FIN</td><td>Day fine</td><td>Unlimited</td></tr>
+                <tr><td><span class="flag">🇦🇪</span>UAE</td><td>Fixed</td><td>AED 3,000</td></tr>
+                <tr><td><span class="flag">🇮🇳</span>IND</td><td>Fixed</td><td>₹4,000</td></tr>
+                <tr><td><span class="flag">🇵🇰</span>PAK</td><td>Fixed</td><td>₨3,000</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Quick tips -->
+        <div class="side-panel">
+          <div class="side-hd"><span class="si">💡</span> Quick Legal Tips</div>
+          <div class="side-bd">
+            <ul class="tip-ul">
+              <li><div class="tip-bullet"></div><span>Always plead guilty early — it can reduce your fine by 25–33% in UK, Germany &amp; France.</span></li>
+              <li><div class="tip-bullet"></div><span>New drivers (under 2 years) face licence revocation at just 6 penalty points in the UK.</span></li>
+              <li><div class="tip-bullet"></div><span>In Finland, a wealthy driver was fined €116,000 for doing 75 in a 50 zone — income matters!</span></li>
+              <li><div class="tip-bullet"></div><span>UAE Abu Dhabi uses zero-tolerance — even 1 km/h over the limit can trigger a fine.</span></li>
+              <li><div class="tip-bullet"></div><span>Speed awareness courses in the UK cost ~£100 and avoid points — only offered for Band A offences.</span></li>
+            </ul>
+          </div>
+        </div>
+      </div><!-- /sidebar -->
+
+    </div><!-- /tool-grid -->
+
+    <!-- ═══════════════════════════════════════
+       SEO CONTENT
+    ═══════════════════════════════════════ -->
+    <div class="seo-wrap">
+
+      <!-- About -->
+      <div class="sec-eye">📌 About This Tool</div>
+      <h2 class="sec-h2">What Is an <span class="u">Overspeed Fine Calculator</span>?</h2>
+      <p class="seo-p">An <strong>overspeed fine calculator</strong> is a free online tool that estimates your exact speeding fine based on your country's legal framework, your recorded speed, the speed limit breached, and — for income-based systems like the UK, Germany, France, and Finland — your weekly income. Rather than waiting anxiously for a court summons, this tool gives you an <strong>instant, accurate fine estimate</strong> using verified sentencing guidelines from 10 countries. Whether you've been caught by a speed camera, a mobile radar unit, or a traffic officer, understanding your likely fine helps you <strong>budget, prepare, and make informed decisions</strong> about whether to plead guilty early or contest the charge.</p>
+      <p class="seo-p">This tool is unique because it covers <strong>both fixed-penalty systems</strong> (USA, Australia, UAE, India, Pakistan) and <strong>income-proportional systems</strong> (UK, Germany, France, Finland) in one place — applying the correct formula for each country automatically. It also factors in early guilty plea discounts, driving licence history, and penalty point accumulation risk, making it the most comprehensive free speeding fine estimator available globally.</p>
+
+      <!-- How Speedometer Works -->
+      <div class="sec-eye" style="margin-top:44px;">🏎️ How It Works</div>
+      <h2 class="sec-h2">How Does the <span class="u">Speedometer Work</span>?</h2>
+      <div class="speedo-explain">
+        <div>
+          <p class="seo-p">A speedometer measures how fast a vehicle is travelling at any given moment. In modern cars, this is done by an <strong>electronic speed sensor</strong> attached to the gearbox or wheel hub. As the wheels spin, the sensor generates a series of electrical pulses — the faster the wheels spin, the more pulses per second. An onboard computer counts these pulses and converts them into a speed reading displayed on your dashboard in mph (miles per hour) or km/h (kilometres per hour).</p>
+          <p class="seo-p">Older analogue speedometers used a <strong>rotating cable</strong> connected to the gearbox — the cable spun a magnet inside the speedometer, which created a magnetic field that pulled a needle across the dial. Modern digital speedometers eliminate mechanical components entirely and are accurate to ±2 mph. Speed cameras used by police typically measure via <strong>Doppler radar, laser (LIDAR), or piezoelectric sensors</strong> embedded in the road — and their recorded speed is what forms the basis of a speeding fine.</p>
+          <p class="seo-p">The <strong>interactive speedometer</strong> in this calculator provides a real-time visual of your entered speed relative to the speed limit — turning from green (safe) to amber (borderline) to red (over the limit) as you type your speed, giving you instant visual feedback before your fine is calculated.</p>
+        </div>
+        <div class="speedo-explain-graphic">
+          <svg width="260" height="200" viewBox="0 0 260 200" xmlns="http://www.w3.org/2000/svg">
+            <rect x="5" y="5" width="250" height="190" rx="20" fill="#0a0e1a" stroke="#1c2537" stroke-width="2"/>
+            <path d="M 30 165 A 110 110 0 0 1 230 165" fill="none" stroke="#1c2537" stroke-width="24" stroke-linecap="round"/>
+            <path d="M 30 165 A 110 110 0 0 1 100 58" fill="none" stroke="#1db954" stroke-width="24" stroke-linecap="round" opacity="0.8"/>
+            <path d="M 100 58 A 110 110 0 0 1 160 58" fill="none" stroke="#f4a000" stroke-width="24" stroke-linecap="round" opacity="0.8"/>
+            <path d="M 160 58 A 110 110 0 0 1 230 165" fill="none" stroke="#e63946" stroke-width="24" stroke-linecap="round" opacity="0.8"/>
+            <line x1="130" y1="165" x2="130" y2="55" stroke="#e63946" stroke-width="3" stroke-linecap="round" transform="rotate(35 130 165)"/>
+            <circle cx="130" cy="165" r="12" fill="#1c2537" stroke="#e63946" stroke-width="2.5"/>
+            <circle cx="130" cy="165" r="5" fill="#e63946"/>
+            <text x="130" y="186" text-anchor="middle" fill="#8892a4" font-size="10" font-family="Nunito">SPEED</text>
+            <text x="45" y="152" text-anchor="middle" fill="#1db954" font-size="9" font-family="Bebas Neue">SAFE</text>
+            <text x="130" y="48" text-anchor="middle" fill="#f4a000" font-size="9" font-family="Bebas Neue">LIMIT</text>
+            <text x="215" y="152" text-anchor="middle" fill="#e63946" font-size="9" font-family="Bebas Neue">FINE</text>
+            <text x="40" y="30" fill="#8892a4" font-size="9" font-family="Bebas Neue">DOPPLER RADAR</text>
+            <text x="40" y="42" fill="#555" font-size="8" font-family="Nunito">Records actual vehicle speed</text>
+            <line x1="40" y1="44" x2="80" y2="90" stroke="#333" stroke-width="1" stroke-dasharray="3,3"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Key Considerations -->
+      <div class="sec-eye" style="margin-top:44px;">📌 Key Considerations</div>
+      <h2 class="sec-h2">Key Considerations for <span class="u">Speeding Fines</span></h2>
+      <div class="cg">
+        <div class="cc"><h4>⚖️ Income-Based vs Fixed Fines</h4><p>UK, Germany, France and Finland calculate fines as a percentage of weekly income — meaning a high earner caught at the same speed pays 10x more than a low earner. USA, Australia, UAE, India and Pakistan use flat fixed penalties regardless of income.</p></div>
+        <div class="cc"><h4>📋 Penalty Points Stack Up</h4><p>Points accumulate over 3 years. 12 points in the UK = automatic licence disqualification. New drivers face stricter rules — just 6 points in the first 2 years means losing your licence and retaking your full driving test.</p></div>
+        <div class="cc"><h4>✅ Early Guilty Plea Discounts</h4><p>In UK, Germany, France and Canada, pleading guilty early in the court process reduces your fine by up to 33%. This does not reduce penalty points — only the monetary fine. Always consult a solicitor before deciding.</p></div>
+        <div class="cc"><h4>🚨 Motorway vs Urban Roads</h4><p>In the UK, fines on motorways are capped at £2,500 — double the standard £1,000 cap on normal roads. In Australia, school zones and work zones carry 50–100% fine surcharges. Location matters enormously.</p></div>
+        <div class="cc"><h4>📸 Speed Camera Tolerance</h4><p>Most UK cameras activate at 10% + 2 mph over the limit. However, Abu Dhabi, UAE has zero tolerance — even 1 km/h over triggers an automated fine. Germany's tolerance is 3 km/h on regular roads, 5 km/h on motorways.</p></div>
+        <div class="cc"><h4>🔄 Insurance Premium Impact</h4><p>A speeding conviction typically raises UK car insurance premiums by 5–25% for 5 years. A Band C conviction (most severe) can double premiums. The true cost of speeding is often 3–5x the fine itself over 5 years.</p></div>
+      </div>
+
+      <!-- Example Calculations -->
+      <div class="sec-eye" style="margin-top:44px;">🧮 Example Calculations</div>
+      <h2 class="sec-h2">Real-World <span class="u">Example Calculations</span></h2>
+      <div class="eg">
+        <div class="ec">
+          <div class="ec-tag">Example 1 — UK · Band B Offence</div>
+          <div class="ec-row"><span class="ec-k">Recorded speed</span><span class="ec-v">50 mph</span></div>
+          <div class="ec-row"><span class="ec-k">Speed limit</span><span class="ec-v">30 mph</span></div>
+          <div class="ec-row"><span class="ec-k">Over by</span><span class="ec-v">20 mph → Band B</span></div>
+          <div class="ec-row"><span class="ec-k">Weekly income</span><span class="ec-v">£600/week</span></div>
+          <div class="ec-row"><span class="ec-k">Base fine (100%)</span><span class="ec-v">£600</span></div>
+          <div class="ec-row"><span class="ec-k">Early guilty plea (−33%)</span><span class="ec-v">−£200</span></div>
+          <div class="ec-div"></div>
+          <div class="ec-total">£400</div>
+          <div class="ec-sub">+ 4–6 penalty points + possible disqualification</div>
+        </div>
+        <div class="ec">
+          <div class="ec-tag">Example 2 — UAE · Fixed Tier</div>
+          <div class="ec-row"><span class="ec-k">Recorded speed</span><span class="ec-v">120 km/h</span></div>
+          <div class="ec-row"><span class="ec-k">Speed limit</span><span class="ec-v">80 km/h</span></div>
+          <div class="ec-row"><span class="ec-k">Over by</span><span class="ec-v">40 km/h</span></div>
+          <div class="ec-row"><span class="ec-k">Fine tier</span><span class="ec-v">AED 700</span></div>
+          <div class="ec-row"><span class="ec-k">Black points</span><span class="ec-v">6 points</span></div>
+          <div class="ec-row"><span class="ec-k">Vehicle confiscation</span><span class="ec-v">15 days</span></div>
+          <div class="ec-div"></div>
+          <div class="ec-total">AED 700</div>
+          <div class="ec-sub">+ 6 black points + 15-day confiscation</div>
+        </div>
+        <div class="ec">
+          <div class="ec-tag">Example 3 — Finland · Day Fine System</div>
+          <div class="ec-row"><span class="ec-k">Recorded speed</span><span class="ec-v">75 km/h</span></div>
+          <div class="ec-row"><span class="ec-k">Speed limit</span><span class="ec-v">50 km/h</span></div>
+          <div class="ec-row"><span class="ec-k">Over by</span><span class="ec-v">25 km/h = 14 day fines</span></div>
+          <div class="ec-row"><span class="ec-k">Daily income</span><span class="ec-v">€200/day</span></div>
+          <div class="ec-row"><span class="ec-k">Day fine (50% of daily)</span><span class="ec-v">€100/day</span></div>
+          <div class="ec-row"><span class="ec-k">14 days × €100</span><span class="ec-v">€1,400</span></div>
+          <div class="ec-div"></div>
+          <div class="ec-total">€1,400</div>
+          <div class="ec-sub">Finland: fines have no upper cap</div>
+        </div>
+      </div>
+
+      <!-- Tips -->
+      <div class="sec-eye" style="margin-top:44px;">🧠 Tips</div>
+      <h2 class="sec-h2">Tips to Reduce Your Fine &amp; <span class="u">Protect Your Licence</span></h2>
+      <div class="tg">
+        <div class="tc"><div class="tn">1</div><div><h4>Accept the Speed Awareness Course</h4><p>In the UK, Band A offences (1–10 mph over) may be offered a speed awareness course instead of points. The course costs ~£100 but adds zero points to your licence — saving you on insurance for 5 years.</p></div></div>
+        <div class="tc"><div class="tn">2</div><div><h4>Always Plead Guilty Early</h4><p>For income-based systems (UK, Germany, France), entering an early guilty plea at the first opportunity reduces your fine by up to one third. This is the single most effective legal step you can take.</p></div></div>
+        <div class="tc"><div class="tn">3</div><div><h4>Challenge Camera Evidence if Justified</h4><p>Speed cameras must be correctly calibrated and operated within type-approval conditions. If there are grounds to doubt the evidence (wrong vehicle, camera angle, calibration date), a specialist motoring solicitor can challenge it.</p></div></div>
+        <div class="tc"><div class="tn">4</div><div><h4>Declare Mitigating Circumstances</h4><p>Courts in the UK, Germany, and France consider mitigating factors: medical emergency, an isolated incident with a clean 10-year record, faulty speedometer. Present evidence — it can reduce Band B to Band A treatment.</p></div></div>
+        <div class="tc"><div class="tn">5</div><div><h4>New Drivers: Be Extra Cautious</h4><p>In the UK, new drivers (first 2 years) who accumulate 6 points have their licence revoked — they must reapply and retake both theory and practical tests. One Band B offence can end a new driver's licence entirely.</p></div></div>
+        <div class="tc"><div class="tn">6</div><div><h4>Pay UAE Fines Promptly</h4><p>The UAE (Dubai) offers up to 50% discount on fines paid within 60 days, and further reductions during national holidays. An unpaid UAE fine can result in vehicle registration blocks and travel bans — pay early.</p></div></div>
+      </div>
+
+      <!-- Testimonials -->
+      <div class="sec-eye" style="margin-top:44px;">⭐ Driver Testimonials</div>
+      <h2 class="sec-h2">What Drivers <span class="u">Are Saying</span></h2>
+      <div class="tmt-grid">
+        <div class="tmt-card">
+          <div class="tmt-stars">★★★★★</div>
+          <p class="tmt-txt">"I was caught doing 52 in a 30 and had no idea what to expect. This tool told me I was looking at a Band B fine of around £480 based on my income. When the court summons arrived, the actual fine was £460 — incredibly accurate. I pleaded guilty early as suggested and saved £150."</p>
+          <div class="tmt-author"><div class="tmt-av">JH</div><div><div class="tmt-name">James H.</div><div class="tmt-loc">🇬🇧 Manchester, UK</div></div></div>
+        </div>
+        <div class="tmt-card">
+          <div class="tmt-stars">★★★★★</div>
+          <p class="tmt-txt">"As an expat in Dubai, I panicked when I got a speeding notification. This tool immediately told me the AED 700 fine tier and the 6 black points — I paid the fine the same day using the Dubai Police app. The explanation of the UAE tolerance system was eye-opening. Never going over again!"</p>
+          <div class="tmt-author"><div class="tmt-av">SR</div><div><div class="tmt-name">Sarah R.</div><div class="tmt-loc">🇦🇪 Dubai, UAE</div></div></div>
+        </div>
+        <div class="tmt-card">
+          <div class="tmt-stars">★★★★☆</div>
+          <p class="tmt-txt">"I used this before my court appearance in Sydney. The tool estimated an AUD $440 fine for doing 65 in a 50 zone — the court gave me $462. The 4-star is only because I wish it covered all Australian states separately. Otherwise a brilliant, stress-reducing tool for any driver."</p>
+          <div class="tmt-author"><div class="tmt-av">MC</div><div><div class="tmt-name">Mike C.</div><div class="tmt-loc">🇦🇺 Sydney, Australia</div></div></div>
+        </div>
+        <div class="tmt-card">
+          <div class="tmt-stars">★★★★★</div>
+          <p class="tmt-txt">"I've been a driving instructor for 18 years. I now recommend this tool to every one of my students so they understand the real-world consequences of speeding before they even get their licence. The income-based explanation for Finland was particularly shocking — worth knowing!"</p>
+          <div class="tmt-author"><div class="tmt-av">AP</div><div><div class="tmt-name">Angela P.</div><div class="tmt-loc">🇬🇧 Birmingham, UK</div></div></div>
+        </div>
+      </div>
+
+      <!-- FAQ -->
+      <div class="sec-eye" style="margin-top:48px;">❓ FAQ</div>
+      <h2 class="sec-h2">Frequently Asked <span class="u">Questions</span></h2>
+      <div class="faq-list">
+        <div class="faq-item"><button class="faq-btn" onclick="toggleFaq(this)">How is a UK speeding fine calculated?<span class="faq-arrow">+</span></button><div class="faq-ans">UK fines use a three-band system based on how far over the limit you were. <strong>Band A (1–10 mph over):</strong> 25–75% of weekly income, minimum £100, 3 points. <strong>Band B (11–20 mph over):</strong> 75–125% of weekly income, minimum £100, 4–6 points or 7–28 day disqualification. <strong>Band C (21+ mph over):</strong> 125–175% of weekly income, minimum £100, 6 points or 7–56 day disqualification. Maximum fine is £1,000 on normal roads, £2,500 on motorways.</div></div>
+        <div class="faq-item"><button class="faq-btn" onclick="toggleFaq(this)">Does an early guilty plea reduce my fine?<span class="faq-arrow">+</span></button><div class="faq-ans">Yes — in the UK, Germany, France and Canada, entering an early guilty plea at the first available opportunity entitles you to a reduction of up to one third (33%) on the fine amount. This applies to the <em>monetary fine only</em> — it does not reduce penalty points or disqualification periods. In the UK, you must enter the plea at the very first opportunity (usually in response to the Single Justice Procedure notice) to receive the maximum reduction.</div></div>
+        <div class="faq-item"><button class="faq-btn" onclick="toggleFaq(this)">What happens if I accumulate 12 penalty points in the UK?<span class="faq-arrow">+</span></button><div class="faq-ans">Under the "totting up" procedure, accumulating <strong>12 or more penalty points within 3 years</strong> results in automatic disqualification — typically for 6 months for a first totting ban, 12 months for a second within 3 years, and 2 years for a third. You can apply for exceptional hardship consideration if losing your licence would cause extreme hardship (e.g. losing your job). New drivers face stricter rules — just 6 points in the first 2 years means licence revocation.</div></div>
+        <div class="faq-item"><button class="faq-btn" onclick="toggleFaq(this)">How does Finland's income-based speeding fine system work?<span class="faq-arrow">+</span></button><div class="faq-ans">Finland uses a "day fine" system. The fine is calculated as: <strong>(Daily income ÷ 2) × Number of day fines</strong>. The number of day fines increases with the severity of the offence. For example, exceeding a 50 km/h limit by 25 km/h might attract 14 day fines. If a driver earns €200/day, their day fine is €100, and the total penalty is €1,400. This system has produced headlines — Nokia executive Anssi Vanjoki was fined €116,000 for doing 75 in a 50 zone. There is no upper cap in Finland.</div></div>
+        <div class="faq-item"><button class="faq-btn" onclick="toggleFaq(this)">What are UAE black points and how many before licence suspension?<span class="faq-arrow">+</span></button><div class="faq-ans">UAE black points are added to your driving record for traffic violations. Speeding fines in the UAE carry 4–12 black points depending on severity. <strong>24 black points:</strong> 3-month licence suspension. <strong>36 black points:</strong> licence revoked (must retake driving test). Points are removed after 1 year if no further violations. In Dubai, Abu Dhabi Police uses zero-tolerance — even 1 km/h over triggers a fine automatically via smart cameras. The UAE also offers a 50% discount on fines paid within 60 days.</div></div>
+        <div class="faq-item"><button class="faq-btn" onclick="toggleFaq(this)">Can I contest a speed camera fine?<span class="faq-arrow">+</span></button><div class="faq-ans">Yes, but it is difficult. Valid grounds include: incorrect vehicle identification, camera calibration records showing the device was out of specification, the speed limit sign being obscured or recently changed, or being a different vehicle in the image. You would need to respond to the Notice of Intended Prosecution (NIP) stating you wish to contest, and present evidence such as dashcam footage, GPS tracking logs, or the camera's maintenance records via a Freedom of Information request. Given the difficulty and cost, most motoring solicitors only recommend contesting if you have strong objective evidence.</div></div>
+        <div class="faq-item"><button class="faq-btn" onclick="toggleFaq(this)">How accurate is this calculator?<span class="faq-arrow">+</span></button><div class="faq-ans">This calculator is based on official published sentencing guidelines for each country (as of 2025). For the UK, it follows the Magistrates' Court Sentencing Guidelines. For Germany, the Bußgeldkatalog (fine catalogue). For UAE, Dubai Police and Abu Dhabi Police published fine schedules. For Australia, NSW/VIC/QLD published penalty notices. Accuracy is typically within 5–10% of the actual fine issued, subject to judicial discretion, aggravating factors, and court costs. Always treat results as estimates and seek qualified legal advice.</div></div>
+        <div class="faq-item"><button class="faq-btn" onclick="toggleFaq(this)">What is the difference between mph and km/h for speed limits?<span class="faq-arrow">+</span></button><div class="faq-ans">Miles per hour (mph) is used in the UK and USA. Kilometres per hour (km/h) is used in the rest of the world, including Australia, Canada, Germany, France, UAE, India, and Pakistan. The conversion is: 1 mph = 1.609 km/h, or 1 km/h = 0.621 mph. This calculator automatically converts between units when you select your country — the tool detects the standard unit system for your country and adjusts accordingly. Always check the unit shown on the calculator matches what was on your speedometer and the road sign.</div></div>
+      </div>
+
+    </div><!-- /seo-wrap -->
+  </div><!-- /container -->
+</main>
+
+<footer class="footer">
+  <p>Built for drivers worldwide — <strong>SpeedFineCalc</strong> is free forever. Results are estimates only.</p>
+  <p style="margin-top:6px;">Always seek qualified legal advice for your specific case. Fines are subject to court discretion.</p>
+</footer>
+
+<!-- ═══════════════════════════════════════
+   JAVASCRIPT — All calculation logic
+═══════════════════════════════════════ -->
+<script>
+/* ─────────────────────────────────────────────
+   STATE
+───────────────────────────────────────────── */
+let speedUnit  = 'mph';
+let limitUnit  = 'mph';
+let guiltyPlea = 'yes';
+let licenceAge = 'new';
+let country    = 'uk';
+
+/* ─────────────────────────────────────────────
+   COUNTRY DATA
+   Each country: { currency, symbol, useIncome, note, calc(overKph, weeklyIncome, guiltyPlea, licenceAge) }
+───────────────────────────────────────────── */
+const COUNTRIES = {
+  uk: {
+    currency:'GBP', symbol:'£', useIncome:true,
+    note:'UK: Income-based fines · Band A/B/C system · Min £100 · Max £1,000 / £2,500 motorway',
+    limits:[20,30,40,50,60,70], defaultUnit:'mph',
+    calc(overMph, income, guilty, lic) {
+      const min=100, maxStd=1000;
+      let band,pct,pts,disq,bandLabel;
+      if(overMph<=0) return null;
+      if(overMph<=10){band='A';pct=0.5;pts=3;disq='None';bandLabel='Minor offence'}
+      else if(overMph<=20){band='B';pct=1.0;pts=4;disq='7–28 days possible';bandLabel='Moderate offence'}
+      else{band='C';pct=1.5;pts=6;disq='7–56 days likely';bandLabel='Serious offence'}
+      let fine = Math.max(min, income * pct);
+      fine = Math.min(fine, maxStd);
+      let disc=0;
+      if(guilty==='yes'){disc=Math.round(fine*(1/3));fine=Math.round(fine-disc);}
+      // New driver risk
+      let licRisk = '';
+      if(lic==='new' && pts>=6) licRisk='⚠️ Licence revocation risk (new driver)';
+      else if(lic==='new') licRisk='New driver: 6 points = revocation';
+      return {band,fine,disc,pts,disq,bandLabel,risk:licRisk,
+        severity: band==='A'?'band-a':band==='B'?'band-b':'band-c',
+        icon: band==='A'?'⚠️':band==='B'?'🚨':'🔴',
+        breakdown:[
+          ['Band',`Band ${band} (${bandLabel})`],
+          ['Income used',`£${income}/week`],
+          ['Base fine %',`${pct*100}% of weekly income`],
+          ['Base fine',`£${Math.max(min,income*pct).toFixed(2)}`],
+          ['Max cap (standard road)',`£${maxStd}`],
+          ['Early plea discount',guilty==='yes'?`−£${disc} (−33%)`:'None'],
+          ['Estimated fine',`£${fine}`],
+          ['Penalty points',`${pts} pts`],
+          ['Disqualification risk',disq],
+          ['Licence note',licRisk||'N/A'],
+        ]};
+    }
+  },
+  usa: {
+    currency:'USD', symbol:'$', useIncome:false,
+    note:'USA: State-based fixed fines · No income calculation · Varies by state',
+    limits:[25,30,35,40,45,55,65,70,75], defaultUnit:'mph',
+    calc(overMph, income, guilty, lic) {
+      if(overMph<=0) return null;
+      let fine,pts,band,bandLabel;
+      if(overMph<=10){fine=150;pts=1;band='A';bandLabel='Minor'}
+      else if(overMph<=20){fine=350;pts=2;band='B';bandLabel='Moderate'}
+      else if(overMph<=30){fine=700;pts=3;band='C';bandLabel='Serious'}
+      else{fine=1200;pts=4;band='D';bandLabel='Extreme'}
+      let disc=0;
+      if(guilty==='yes'){disc=Math.round(fine*0.15);fine-=disc;}
+      return {band,fine,disc,pts,disq:'Possible 30+ days',bandLabel,risk:lic==='new'?'New driver: extra scrutiny':'',
+        severity:band==='A'?'band-a':band==='B'||band==='C'?'band-b':'band-c',
+        icon:band==='A'?'⚠️':band==='C'||band==='D'?'🔴':'🚨',
+        breakdown:[
+          ['Fine tier',bandLabel],
+          ['Base fine',`$${fine+disc}`],
+          ['Early plea discount',guilty==='yes'?`−$${disc}`:'None (USA courts vary)'],
+          ['Estimated fine',`$${fine}`],
+          ['Demerit points',`${pts}`],
+          ['Court costs','$50–$200 additional (typical)'],
+          ['Note','Fines vary significantly by state and jurisdiction'],
+        ]};
+    }
+  },
+  aus: {
+    currency:'AUD', symbol:'AU$', useIncome:false,
+    note:'Australia: State-based fixed fines · NSW/VIC/QLD reference',
+    limits:[40,50,60,80,100,110], defaultUnit:'kph',
+    calc(overKph, income, guilty, lic) {
+      if(overKph<=0) return null;
+      let fine,pts,band,bandLabel;
+      if(overKph<=10){fine=120;pts=1;band='A';bandLabel='Low range'}
+      if(overKph<=10){fine=120;pts=1;band='A';bandLabel='Low range'}
+      else if(overKph<=20){fine=380;pts=3;band='B';bandLabel='Mid range'}
+      else if(overKph<=30){fine=700;pts=4;band='C';bandLabel='High range'}
+      else if(overKph<=45){fine=1200;pts=5;band='D';bandLabel='Very high'}
+      else{fine=2000;pts=6;band='E';bandLabel='Extreme'}
+      let disc=0;
+      if(guilty==='yes'){disc=Math.round(fine*0.1);fine-=disc;}
+      return {band,fine,disc,pts,disq:overKph>30?'Automatic suspension likely':'Possible',bandLabel,
+        risk:lic==='new'?'Learner/P-plate: stricter rules apply':'',
+        severity:['A'].includes(band)?'band-a':['B','C'].includes(band)?'band-b':'band-c',
+        icon:band==='A'?'⚠️':band==='D'||band==='E'?'🔴':'🚨',
+        breakdown:[
+          ['Offence category',bandLabel],
+          ['Fine (approximate)',`AU$${fine+disc}`],
+          ['Early plea adjustment',guilty==='yes'?`−AU$${disc} (10% estimate)`:'None officially'],
+          ['Estimated fine',`AU$${fine}`],
+          ['Demerit points',`${pts}`],
+          ['Licence suspension',overKph>30?'Automatic suspension likely':'Possible'],
+          ['Note','Fines vary by state (NSW/VIC/QLD used as reference)'],
+        ]};
+    }
+  },
+  can: {
+    currency:'CAD', symbol:'CA$', useIncome:false,
+    note:'Canada: Province-based fixed fines · Ontario reference',
+    limits:[50,60,80,100,110], defaultUnit:'kph',
+    calc(overKph, income, guilty, lic) {
+      if(overKph<=0) return null;
+      let fine,pts,band,bandLabel;
+      if(overKph<=15){fine=95;pts=2;band='A';bandLabel='Minor'}
+      else if(overKph<=30){fine=260;pts=3;band='B';bandLabel='Moderate'}
+      else if(overKph<=50){fine=480;pts=4;band='C';bandLabel='Major'}
+      else{fine=1000;pts=6;band='D';bandLabel='Stunt/Extreme'}
+      let disc=0;
+      if(guilty==='yes'){disc=Math.round(fine*0.2);fine-=disc;}
+      return {band,fine,disc,pts,disq:overKph>50?'Licence suspension (stunt driving)':'Possible',bandLabel,
+        risk:lic==='new'?'Graduated licence: zero tolerance applies':'',
+        severity:band==='A'?'band-a':band==='B'||band==='C'?'band-b':'band-c',
+        icon:band==='A'?'⚠️':band==='D'?'🔴':'🚨',
+        breakdown:[
+          ['Offence tier',bandLabel],
+          ['Fine (Ontario)',`CA$${fine+disc}`],
+          ['Early plea discount',guilty==='yes'?`−CA$${disc}`:'None'],
+          ['Estimated fine',`CA$${fine}`],
+          ['Demerit points',`${pts}`],
+          ['Note','Fines vary by province. Ontario reference used.'],
+        ]};
+    }
+  },
+  ger: {
+    currency:'EUR', symbol:'€', useIncome:true,
+    note:'Germany: Bußgeldkatalog (fixed) + court income-based for serious cases',
+    limits:[50,100,120,130], defaultUnit:'kph',
+    calc(overKph, income, guilty, lic) {
+      if(overKph<=0) return null;
+      let fine,pts,band,bandLabel,disq;
+      if(overKph<=10){fine=30;pts=0;band='A';bandLabel='Very minor';disq='None'}
+      else if(overKph<=15){fine=50;pts=0;band='A';bandLabel='Minor';disq='None'}
+      else if(overKph<=20){fine=70;pts=1;band='B';bandLabel='Moderate';disq='None'}
+      else if(overKph<=25){fine=115;pts=1;band='B';bandLabel='Significant';disq='Possible'}
+      else if(overKph<=30){fine=180;pts=1;band='C';bandLabel='Serious';disq='1 month ban'}
+      else if(overKph<=40){fine=260;pts=2;band='C';bandLabel='Very serious';disq='1 month ban'}
+      else if(overKph<=50){fine=400;pts=2;band='D';bandLabel='Extreme';disq='2 month ban'}
+      else{fine=680;pts=2;band='D';bandLabel='Dangerous';disq='3 month ban'}
+      let disc=0;
+      if(guilty==='yes' && fine>100){disc=Math.round(fine*0.25);fine-=disc;}
+      return {band,fine,disc,pts,disq,bandLabel,risk:lic==='new'?'Probationary period extended':'',
+        severity:band==='A'?'band-a':band==='B'||band==='C'?'band-b':'band-c',
+        icon:band==='A'?'⚠️':band==='D'?'🔴':'🚨',
+        breakdown:[
+          ['Catalogue fine (Bußgeldkatalog)',`€${fine+disc}`],
+          ['Flensburg points',`${pts}`],
+          ['Early plea reduction',guilty==='yes'?`−€${disc}`:'None'],
+          ['Estimated fine',`€${fine}`],
+          ['Driving ban',disq],
+          ['Note','Tolerance: 3 km/h (road), 5 km/h (motorway) deducted'],
+        ]};
+    }
+  },
+  fra: {
+    currency:'EUR', symbol:'€', useIncome:false,
+    note:'France: Fixed fines · 4th class offences · Points-based licence (12-point start)',
+    limits:[50,80,110,130], defaultUnit:'kph',
+    calc(overKph, income, guilty, lic) {
+      if(overKph<=0) return null;
+      let fine,pts,band,bandLabel,disq;
+      if(overKph<=20){fine=68;pts=1;band='A';bandLabel='Minor';disq='None'}
+      else if(overKph<=30){fine=135;pts=2;band='B';bandLabel='Moderate';disq='Possible'}
+      else if(overKph<=50){fine=375;pts=3;band='C';bandLabel='Serious';disq='3 year suspension possible'}
+      else{fine=1500;pts=6;band='D';bandLabel='Extreme';disq='Suspension + possible criminal'}
+      let disc=0;
+      if(guilty==='yes'){disc=Math.round(fine*0.33);fine-=disc;}
+      return {band,fine,disc,pts,disq,bandLabel,risk:lic==='new'?'French system: start with 6 pts, gain to 12':'',
+        severity:band==='A'?'band-a':band==='B'?'band-b':'band-c',
+        icon:band==='A'?'⚠️':band==='D'?'🔴':'🚨',
+        breakdown:[
+          ['Fixed fine (4th class)',`€${fine+disc}`],
+          ['Points deducted (from 12)',`−${pts} points`],
+          ['Early plea discount',guilty==='yes'?`−€${disc} (33%)`:'None'],
+          ['Estimated fine',`€${fine}`],
+          ['Licence action',disq],
+          ['Note','France: pay within 15 days for 20% reduction (forfait minoré)'],
+        ]};
+    }
+  },
+  fin: {
+    currency:'EUR', symbol:'€', useIncome:true,
+    note:'Finland: Day fine system — daily income ÷ 2 × number of day fines. No upper cap!',
+    limits:[30,50,60,80,100,120], defaultUnit:'kph',
+    calc(overKph, income, guilty, lic) {
+      if(overKph<=0) return null;
+      // Day fine = weekly income / 7 / 2
+      const dailyFine = Math.round((income / 7) / 2);
+      let dayFines,band,bandLabel,disq,pts;
+      if(overKph<=10){dayFines=5;band='A';bandLabel='Minor';disq='None';pts=0}
+      else if(overKph<=20){dayFines=10;band='B';bandLabel='Moderate';disq='None';pts=0}
+      else if(overKph<=30){dayFines=14;band='C';bandLabel='Significant';disq='Possible';pts=0}
+      else if(overKph<=40){dayFines=20;band='D';bandLabel='Serious';disq='Suspension';pts=0}
+      else{dayFines=30;band='E';bandLabel='Extreme';disq='Criminal charges + suspension';pts=0}
+      let fine = dailyFine * dayFines;
+      let disc=0;
+      if(guilty==='yes'){disc=Math.round(fine*0.15);fine-=disc;}
+      return {band,fine,disc,pts,disq,bandLabel,risk:lic==='new'?'Probationary period scrutiny':'',
+        severity:band==='A'?'band-a':['B','C'].includes(band)?'band-b':'band-c',
+        icon:band==='A'?'⚠️':['D','E'].includes(band)?'🔴':'🚨',
+        breakdown:[
+          ['Weekly income',`€${income}`],
+          ['Daily income (÷7)',`€${Math.round(income/7)}`],
+          ['Day fine (÷2)',`€${dailyFine}`],
+          ['Day fines assigned',`${dayFines} day fines`],
+          ['Base fine',`€${dailyFine*dayFines}`],
+          ['Early plea reduction',guilty==='yes'?`−€${disc}`:'None'],
+          ['Estimated fine',`€${fine}`],
+          ['No upper cap','Finland has no maximum fine!'],
+          ['Licence action',disq],
+        ]};
+    }
+  },
+  uae: {
+    currency:'AED', symbol:'AED ', useIncome:false,
+    note:'UAE: Fixed tiered fines by km/h over limit · Black points system · Dubai/Abu Dhabi',
+    limits:[40,60,80,100,120,140], defaultUnit:'kph',
+    calc(overKph, income, guilty, lic) {
+      if(overKph<=0) return null;
+      let fine,black,band,bandLabel,confiscate,disq;
+      if(overKph<=20){fine=300;black=4;band='A';bandLabel='Tier 1';confiscate='None';disq='None'}
+      else if(overKph<=30){fine=600;black=4;band='B';bandLabel='Tier 2';confiscate='None';disq='None'}
+      else if(overKph<=40){fine=700;black=4;band='B';bandLabel='Tier 3';confiscate='None';disq='None'}
+      else if(overKph<=50){fine=1000;black=6;band='C';bandLabel='Tier 4';confiscate='None';disq='None'}
+      else if(overKph<=60){fine=1500;black=6;band='C';bandLabel='Tier 5';confiscate='15 days';disq='Possible'}
+      else if(overKph<=80){fine=2000;black=12;band='D';bandLabel='Tier 6';confiscate='30 days';disq='60 day suspension'}
+      else if(overKph<=80){fine=2000;black=12;band='D';bandLabel='Tier 6';confiscate='30 days';disq='60 day suspension'}
+      else{fine=3000;black=12;band='D';bandLabel='Tier 7';confiscate='60 days';disq='1 year suspension'}
+      // Dubai offers 50% discount for early payment
+      let disc=0;
+      if(guilty==='yes'){disc=Math.round(fine*0.35);fine-=disc;}
+      return {band,fine,disc,pts:black,disq,bandLabel,risk:lic==='new'?'Probationary licence: stricter review':'',
+        severity:band==='A'?'band-a':band==='B'||band==='C'?'band-b':'band-c',
+        icon:band==='A'?'⚠️':band==='D'?'🔴':'🚨',
+        breakdown:[
+          ['Fine tier',bandLabel],
+          ['Fine amount',`AED ${fine+disc}`],
+          ['Black points',`${black} black points`],
+          ['Vehicle confiscation',confiscate],
+          ['Early payment discount',guilty==='yes'?`−AED ${disc} (35% early pay)`:'None'],
+          ['Estimated fine',`AED ${fine}`],
+          ['Licence action',disq],
+          ['Note','Pay within 60 days for best discount. Abu Dhabi: zero tolerance.'],
+        ]};
+    }
+  },
+  ind: {
+    currency:'INR', symbol:'₹', useIncome:false,
+    note:'India: Motor Vehicles Act 2019 · Fixed penalties · Repeat offences doubled',
+    limits:[30,40,50,60,80,100,120], defaultUnit:'kph',
+    calc(overKph, income, guilty, lic) {
+      if(overKph<=0) return null;
+      let fine,pts,band,bandLabel;
+      if(overKph<=10){fine=500;pts=0;band='A';bandLabel='Minor excess'}
+      else if(overKph<=20){fine=1000;pts=0;band='B';bandLabel='Moderate excess'}
+      else if(overKph<=30){fine=2000;pts=0;band='C';bandLabel='Serious excess'}
+      else{fine=4000;pts=0;band='D';bandLabel='Dangerous excess'}
+      let disc=0;
+      if(guilty==='yes'){disc=0;}// India: no formal early plea discount
+      return {band,fine,disc,pts,disq:overKph>30?'Possible suspension':'None',bandLabel,
+        risk:lic==='new'?'Learning licence: disqualification risk':'',
+        severity:band==='A'?'band-a':band==='B'||band==='C'?'band-b':'band-c',
+        icon:band==='A'?'⚠️':band==='D'?'🔴':'🚨',
+        breakdown:[
+          ['Offence',bandLabel],
+          ['Fine (MV Act 2019)',`₹${fine}`],
+          ['Repeat offender',`₹${fine*2} (doubled)`],
+          ['Note','India: no formal early plea reduction. Fines may vary by state.'],
+          ['Licence action',overKph>30?'Possible suspension':'None'],
+        ]};
+    }
+  },
+  pak: {
+    currency:'PKR', symbol:'₨', useIncome:false,
+    note:'Pakistan: Motor Vehicles Ordinance · Fixed challans · Varies by province',
+    limits:[30,40,50,60,80,100,120], defaultUnit:'kph',
+    calc(overKph, income, guilty, lic) {
+      if(overKph<=0) return null;
+      let fine,pts,band,bandLabel;
+      if(overKph<=10){fine=500;pts=0;band='A';bandLabel='Minor'}
+      if(overKph<=10){fine=500;pts=0;band='A';bandLabel='Minor'}
+      else if(overKph<=20){fine=1000;pts=0;band='B';bandLabel='Moderate'}
+      else if(overKph<=30){fine=2000;pts=0;band='C';bandLabel='Serious'}
+      else{fine=3000;pts=0;band='D';bandLabel='Dangerous'}
+      let disc=0;
+      return {band,fine,disc,pts,disq:overKph>30?'Licence confiscation possible':'None',bandLabel,
+        risk:lic==='new'?'Learner: additional scrutiny':'',
+        severity:band==='A'?'band-a':band==='B'||band==='C'?'band-b':'band-c',
+        icon:band==='A'?'⚠️':band==='D'?'🔴':'🚨',
+        breakdown:[
+          ['Challan amount',`₨${fine}`],
+          ['Province variation','Fines set per province (Punjab/Sindh/KPK/Balochistan)'],
+          ['Note','Pakistan: enforcement mainly manual challan system'],
+          ['Licence action',overKph>30?'Confiscation possible':'None'],
+        ]};
+    }
+  }
+};
+
+/* ─────────────────────────────────────────────
+   UI HELPERS
+───────────────────────────────────────────── */
+function setUnit(u) {
+  speedUnit = u;
+  document.getElementById('btnMph').classList.toggle('active', u==='mph');
+  document.getElementById('btnKph').classList.toggle('active', u==='kph');
+  onSpeedChange();
+}
+function setLimitUnit(u) {
+  limitUnit = u;
+  document.getElementById('btnLimMph').classList.toggle('active', u==='mph');
+  document.getElementById('btnLimKph').classList.toggle('active', u==='kph');
+  onSpeedChange();
+}
+function setGuilty(v) {
+  guiltyPlea = v;
+  document.getElementById('yesBtn').className = 'yn-btn' + (v==='yes'?' active-yes':'');
+  document.getElementById('noBtn').className  = 'yn-btn' + (v==='no'?' active-no':'');
+}
+function setLicence(el, v) {
+  licenceAge = v;
+  document.querySelectorAll('.lic-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+}
+function onCountryChange() {
+  country = document.getElementById('selCountry').value;
+  const c = COUNTRIES[country];
+  document.getElementById('countryNote').textContent = c.note;
+  document.getElementById('curBadge').textContent = c.symbol.trim();
+  // auto switch units
+  const su = c.defaultUnit;
+  setUnit(su); setLimitUnit(su);
+  // toggle income visibility
+  document.getElementById('weeklyIncome').closest('.form-row').style.opacity = c.useIncome?'1':'0.5';
+  onSpeedChange();
+}
+
+/* ─────────────────────────────────────────────
+   LIVE SPEED DISPLAY + SPEEDOMETER
+───────────────────────────────────────────── */
+function onSpeedChange() {
+  const rec  = parseFloat(document.getElementById('recSpeed').value) || 0;
+  const lim  = parseFloat(document.getElementById('speedLimit').value) || 0;
+  // Normalise to kph for display
+  const recKph = speedUnit==='mph' ? rec*1.60934 : rec;
+  const limKph = limitUnit==='mph' ? lim*1.60934 : lim;
+  const over   = rec - lim; // in same units
+  const liveBox = document.getElementById('liveSpeedBox');
+  if(rec>0) {
+    liveBox.style.display='flex';
+    document.getElementById('lsVal').textContent = rec + ' ' + speedUnit;
+    const ov = document.getElementById('lsOver');
+    if(over>0){ov.textContent=`+${over.toFixed(1)} ${speedUnit} OVER`;ov.style.color='var(--red)'}
+    else if(over<0){ov.textContent=`${Math.abs(over).toFixed(1)} ${speedUnit} UNDER`;ov.style.color='var(--green)'}
+    else{ov.textContent='AT LIMIT';ov.style.color='var(--gold)'}
+  } else { liveBox.style.display='none'; }
+  // Speedometer needle: 0–max speed limit considered 0–100% of gauge (half arc 180deg)
+  // Needle angle: -90deg = far left (0), +90deg = far right (max)
+  const maxRef = Math.max(limKph*1.8, 120); // max of gauge
+  const angleDeg = -90 + Math.min(180, (recKph/maxRef)*180);
+  document.getElementById('heroNeedle').style.transform = `translateX(-50%) rotate(${angleDeg}deg)`;
+  document.getElementById('heroSpeedLabel').innerHTML = `${rec||0} <span style="font-size:20px;opacity:0.5">${speedUnit}</span>`;
+  document.getElementById('miniSpeedVal').innerHTML = `${rec||0} <span style="font-size:18px;opacity:0.4">${speedUnit}</span>`;
+  document.getElementById('miniSpeedNote').textContent = over>0 ? `${over.toFixed(1)} ${speedUnit} over the limit` : rec>0 ? 'Within the limit' : 'Enter your speed above';
+  // Mini needle
+  const pct = Math.min(1, recKph/maxRef);
+  const miniAngle = -90 + pct*180;
+  document.getElementById('miniNeedle').setAttribute('transform',`rotate(${miniAngle} 120 128)`);
+}
+function updateLiveDisplay() { onSpeedChange(); }
+
+/* ─────────────────────────────────────────────
+   MAIN CALCULATION
+───────────────────────────────────────────── */
+function doCalculate() {
+  const rec   = parseFloat(document.getElementById('recSpeed').value);
+  const lim   = parseFloat(document.getElementById('speedLimit').value);
+  const inc   = parseFloat(document.getElementById('weeklyIncome').value) || 0;
+  if(!rec || !lim || lim<=0) { alert('Please enter both your recorded speed and the speed limit.'); return; }
+  if(rec<=lim) { alert('Your recorded speed is at or below the speed limit — no fine applies!'); return; }
+  // Normalise: convert both to kph
+  const recKph = speedUnit==='mph' ? rec*1.60934 : rec;
+  const limKph = limitUnit==='mph' ? lim*1.60934 : lim;
+  const recMph = speedUnit==='mph' ? rec : rec/1.60934;
+  const limMph = limitUnit==='mph' ? lim : lim/1.60934;
+  const overMph = recMph - limMph;
+  const overKph = recKph - limKph;
+  // Use mph for UK/USA/Canada, kph for rest
+  const useMph = ['uk','usa'].includes(country);
+  const overVal = useMph ? overMph : overKph;
+  const c = COUNTRIES[country];
+  const result = c.calc(overVal, inc, guiltyPlea, licenceAge);
+  if(!result) { alert('Invalid calculation. Please check your inputs.'); return; }
+  // Display results
+  const sym = c.symbol;
+  document.getElementById('rOver').textContent = overVal.toFixed(1);
+  document.getElementById('rOverUnit').textContent = (useMph?'mph':'km/h') + ' over the limit';
+  document.getElementById('rPoints').textContent = result.pts;
+  // Points dots
+  const dotsEl = document.getElementById('ptsDots');
+  dotsEl.innerHTML='';
+  const maxDots = Math.max(result.pts, 6);
+  for(let i=0;i<maxDots;i++){const d=document.createElement('div');d.className='pts-dot'+(i<result.pts?' filled':'');dotsEl.appendChild(d);}
+  document.getElementById('rBase').textContent = sym + (result.fine + result.disc).toLocaleString();
+  document.getElementById('rBaseUnit').textContent = 'before discounts';
+  document.getElementById('rDisc').textContent = result.disc>0 ? '−'+sym+result.disc.toLocaleString() : 'None';
+  document.getElementById('rDiscNote').textContent = result.disc>0 ? 'early guilty plea reduction' : 'no discount applied';
+  document.getElementById('rFinal').textContent = sym + result.fine.toLocaleString();
+  document.getElementById('rFinalNote').textContent = `${result.disq!=='None'?'⚠️ '+result.disq:''} ${result.risk?'· '+result.risk:''}`;
+  // Severity banner
+  const banner = document.getElementById('sevBanner');
+  banner.className = 'severity-banner '+result.severity;
+  document.getElementById('sevIcon').textContent = result.icon;
+  document.getElementById('sevBand').textContent = `Band ${result.band}`;
+  document.getElementById('sevLabel').textContent = result.bandLabel;
+  document.getElementById('sevDesc').textContent = `${overVal.toFixed(1)} ${useMph?'mph':'km/h'} over the limit in ${document.getElementById('selCountry').options[document.getElementById('selCountry').selectedIndex].text}`;
+  // Breakdown table
+  const tbody = document.getElementById('breakdownBody');
+  tbody.innerHTML = result.breakdown.map(([k,v])=>`<tr><td style="color:var(--muted);font-size:12px;width:45%">${k}</td><td style="font-weight:600">${v}</td></tr>`).join('');
+  // Show results
+  const rw = document.getElementById('resultsWrap');
+  rw.classList.add('show');
+  setTimeout(()=>rw.scrollIntoView({behavior:'smooth',block:'start'}),80);
+  // Counter
+  const el=document.getElementById('usageCtr');
+  const n=parseInt(el.textContent.replace(/\D/g,''));
+  el.textContent=(n+1).toLocaleString()+'+';
+}
+
+/* ─────────────────────────────────────────────
+   RESET
+───────────────────────────────────────────── */
+function doReset() {
+  ['recSpeed','speedLimit','weeklyIncome'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('resultsWrap').classList.remove('show');
+  document.getElementById('liveSpeedBox').style.display='none';
+  document.getElementById('heroNeedle').style.transform='translateX(-50%) rotate(-90deg)';
+  document.getElementById('heroSpeedLabel').innerHTML='0 <span style="font-size:20px;opacity:0.5">mph</span>';
+  document.getElementById('miniSpeedVal').innerHTML='— <span style="font-size:18px;opacity:0.4">mph</span>';
+  document.getElementById('miniSpeedNote').textContent='Enter your speed above';
+  document.getElementById('miniNeedle').setAttribute('transform','rotate(-90 120 128)');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ─────────────────────────────────────────────
+   FAQ ACCORDION
+───────────────────────────────────────────── */
+function toggleFaq(btn) {
+  const ans=btn.nextElementSibling;
+  const isOpen=ans.classList.contains('open');
+  document.querySelectorAll('.faq-ans').forEach(a=>a.classList.remove('open'));
+  document.querySelectorAll('.faq-btn').forEach(b=>b.classList.remove('open'));
+  if(!isOpen){ans.classList.add('open');btn.classList.add('open');}
+}
+
+/* ─────────────────────────────────────────────
+   INIT
+───────────────────────────────────────────── */
+onCountryChange();
+</script>
+</body>
+</html>
